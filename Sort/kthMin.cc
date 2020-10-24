@@ -39,9 +39,9 @@ int kthMin(int *a, int l, int r, int k) {
   if (k == m) {
     return a[p];
   } else if (k < m) {
-    return kthMin(a,l,r,k);
+    return kthMin(a,l,p-1,k);
   } else {
-    return kthMin(a,l,r,k-m);
+    return kthMin(a,p+1,r,k-m);
   }
 }
 
