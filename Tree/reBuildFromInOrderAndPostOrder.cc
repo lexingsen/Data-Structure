@@ -23,7 +23,7 @@ public:
       for (int i=0; i<n; ++i) pos[in[i]] = i;
       return dfs(in, post, 0, n-1, 0, n-1);
     }
-
+    
     TreeNode* dfs(vector<int> &in, vector<int> &post, int inL, int inR, int postL, int postR) {
       if (postL > postR) return nullptr;
       int val = post[postR];

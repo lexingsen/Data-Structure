@@ -1,7 +1,7 @@
 /*
- * @Description: 
- * @Language: 
- * @Author: 
+ * @Description: AVL树C++实现
+ * @Language: C++
+ * @Author: lexingsen
  * @Date: 2020-10-09 15:25:29
  */
 
@@ -107,6 +107,7 @@ public:
   AVL() {
     this->root = nullptr;
     this->size = 0;
+    this->i = 0;
   }
 
 
@@ -405,16 +406,107 @@ public:
     PrintNode(nodes, 1, max_level);  
   }  
 
+
+  void zigzag() {
+    zigzag(root);
+  }
+
+  void zigzag(TreeNode *root) {
+    if (!root) return;
+    queue<TreeNode*> q;
+    q.push(root);
+    while (!q.empty()) {
+      auto f = q.front();q.pop();
+      cout << f->val << " ";
+      if (f->right) q.push(f->right);
+      if (f->left) q.push(f->left);
+    }
+    cout << endl;
+  }
+
+  int noRecursionGetHeight() {
+    return noRecursionGetHeight(root);
+  }
+
+  int noRecursionGetHeight(TreeNode *root) {
+    // 利用层序遍历
+    if (!root) return 0;
+    queue<TreeNode*> q;
+    q.push(root);
+    int height = 0;
+    while (!q.empty()) {
+      height ++;
+      int size = q.size();
+      int cnt = 0;
+      while (cnt < size) {
+        auto f = q.front();q.pop();
+        cnt ++;
+        if (f->left) q.push(f->left);
+        if (f->right) q.push(f->right);
+      }
+    }
+    return height;
+  }
+
+  int preOrderKth(int k) {
+    return preOrderKth(root, k);
+  }
+
+  int width() {
+    return width(root);
+  }
+
+
+
+private:
+  int width(TreeNode *root) {
+    if (!root) return 0;
+    queue<TreeNode*> q;
+    q.push(root);
+    int w = 1;
+    while (!q.empty()) {
+      int size = q.size();
+      while (size > 0) {
+        auto f = q.front();q.pop();
+        size --;
+        if (f->left) q.push(f->left);
+        if (f->right) q.push(f->right);
+
+      }
+      w = max(w, (int)q.size());
+    }
+    return w;
+  }
+
+
+  
+  int i;
+  int preOrderKth(TreeNode *root, int &k) {
+    if (!root) return -1;
+    if (k == i) return root->val;
+    i ++;
+    int left = preOrderKth(root->left, k);
+    if (left != -1) return left;
+    int right = preOrderKth(root->right, k);
+    if (right != -1) return right;
+  }
+
 };
 
 
 int main() {
-  int a[] = {1,2,3,4,5,6,7,8,9,10};
+  int a[] = {24,13,53,37,90,48};
   int n = sizeof(a)/sizeof(int);
   AVL avl;
-  for (int i=0; i<n; ++i) avl.add(a[i]);
+  int x;
+  cout << "input:";
+  cin >> x;
+  for (int i=1; i<=x; ++i) avl.add(i);
   avl.show();
-  avl.remove(5);
-  avl.show();
+  avl.zigzag();
+  avl.bfs();
+
+  cout << "height:" << avl.noRecursionGetHeight() << endl;
+  cout << "width:" << avl.width() << endl;
   return 0;
 }

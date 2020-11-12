@@ -20,23 +20,22 @@ vector<int> postOrder(node *root) {
   stack<node*> st;
   auto p = root;
   node* tag = nullptr;
-  while (p || !st.empty()) {
-    if (p) {
-      res.push_back(p->val);
+  while (p || st.size()) {
+    while (p) {
       st.push(p);
       p = p->left;
+    }
+    p = st.top();st.pop();
+    if (!p->right || p->right==tag) {
+      res.push_back(p->val);
+      tag = p;
+      p = nullptr;
     } else {
-      p = st.top();
-      if (p->right && p->right!=tag) {
-
-      } else {
-        st.pop();
-        res.push_back(p->val);
-        tag = p;
-        p = nullptr;
-      }
+      st.push(p);
+      p = p->right;
     }
   }
+  return res;
 }
 
 

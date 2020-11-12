@@ -17,17 +17,19 @@ vector<int> preOrder(node *root) {
   vector<int> res;
   if (!root) return res;
   stack<node*> st;
-  node *cur = root;
-  while (cur || !st.empty()) {
-    while (cur) {
-      res.push_back(cur->val);
-      st.push(cur);
-      cur = cur->right;
+  auto p = root;
+  stack<node*> st;
+  while (p || st.size()) {
+    if (p) {
+      res.push_back(p->val);
+      st.push(p);
+      p = p->left;
+    } else {
+      auto top = st.top();st.pop();
+      p = top->right;
     }
-
-    node *top = st.top();st.pop();
-    cur = top->right;
   }
+  return res;
 }
 
 int main() {
